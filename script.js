@@ -6,18 +6,18 @@ let currentPass = null;
 $(document).ready(function() {
     toggleLogoutButton(false);
 
-    // --- NEW: LINK MOBILE SEARCH TO DATATABLES ---
+    // Mobile Search Binding
     $('#mobile-search-input').on('keyup', function() {
         if ($.fn.DataTable.isDataTable('#inventory')) {
             $('#inventory').DataTable().search(this.value).draw();
         }
     });
 
-    // --- NEW: LINK MOBILE SORT TO DATATABLES ---
+    // Mobile Sort Binding
     $('#mobile-sort-select').on('change', function() {
         if ($.fn.DataTable.isDataTable('#inventory')) {
             let val = $(this).val();
-            let [col, dir] = val.split('_'); // e.g. "0_asc" -> col 0, direction asc
+            let [col, dir] = val.split('_');
             $('#inventory').DataTable().order([parseInt(col), dir]).draw();
         }
     });
@@ -115,7 +115,6 @@ function loadTable() {
         lengthChange: false, 
         language: { search: "", searchPlaceholder: "Search items..." },
         
-        // Add data-labels for Mobile Card View
         createdRow: function (row, data, dataIndex) {
             const labels = ['Item', 'Qty', 'Unit', 'Category', 'Expiry', 'Status', 'Days Left'];
             $('td', row).each(function(i) {
