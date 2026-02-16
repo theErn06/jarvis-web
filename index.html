@@ -12,125 +12,153 @@
 </head>
 <body>
 
-    <div class="mobile-header">
-        <button class="menu-trigger" onclick="toggleMobileMenu()">
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <header class="mobile-header">
+        <button class="menu-btn" onclick="toggleMenu()">
             <i class="fa-solid fa-bars"></i>
         </button>
-        <span class="mobile-title">Jarvis Inventory</span>
-    </div>
-
-    <div class="mobile-backdrop" onclick="toggleMobileMenu()"></div>
+        <span class="logo-text">Jarvis Inventory</span>
+    </header>
 
     <nav class="sidebar" id="sidebar">
-        <div class="menu-header">
-            <div class="nav-icon-container">
-                <i class="fa-solid fa-bars nav-fa" style="color: #555;"></i>
+        <div class="sidebar-header">
+            <div class="logo-area">
+                <i class="fa-solid fa-robot nav-icon" style="color: #00bcd4;"></i>
+                <span class="nav-text header-text">Menu</span>
             </div>
-            <span class="nav-text">Menu</span>
-            <button class="mobile-close-btn" onclick="toggleMobileMenu()">
-                <i class="fa-solid fa-xmark"></i>
+            <button class="close-btn" onclick="toggleMenu()">
+                <i class="fa-solid fa-times"></i>
             </button>
         </div>
 
         <ul class="nav-links">
             <li>
                 <a href="#" class="nav-item">
-                    <div class="nav-icon-container">
-                        <img src="pic/jarvis-icon.jpg" alt="Jarvis" class="nav-img">
-                    </div>
+                    <span class="icon-box">
+                        <img src="jarvis-icon.jpg" alt="Jarvis" class="custom-icon">
+                    </span>
                     <span class="nav-text">Jarvis</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-item">
-                    <div class="nav-icon-container">
-                        <img src="pic/guide-icon.jpg" alt="Guide" class="nav-img">
-                    </div>
+                    <span class="icon-box">
+                        <img src="guide-icon.jpg" alt="Guide" class="custom-icon">
+                    </span>
                     <span class="nav-text">Guide</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-item">
-                    <div class="nav-icon-container">
-                        <i class="fa-solid fa-circle-info nav-fa" style="color: #555;"></i>
-                    </div>
+                    <span class="icon-box">
+                        <i class="fa-solid fa-circle-info nav-icon"></i>
+                    </span>
                     <span class="nav-text">About Us</span>
                 </a>
             </li>
         </ul>
 
         <div class="bottom-section" id="logout-section" style="display: none;">
-            <a href="#" onclick="logout()" class="nav-item" style="color: #ff5252;">
-                <div class="nav-icon-container">
-                    <i class="fa-solid fa-right-from-bracket nav-fa"></i>
-                </div>
+            <a href="#" onclick="logout()" class="nav-item logout-item">
+                <span class="icon-box">
+                    <i class="fa-solid fa-right-from-bracket nav-icon"></i>
+                </span>
                 <span class="nav-text">Log Out</span>
             </a>
         </div>
     </nav>
 
     <main class="main-content">
-        <div class="container">
+        
+        <div id="login-view" class="card auth-card">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Please login to your dashboard</p>
             
-            <div id="login-view" class="auth-box">
-                <h2>Welcome Back</h2>
-                <h3>Login to continue</h3>
+            <div class="input-group">
+                <i class="fa-solid fa-user input-icon"></i>
                 <input type="text" id="login-user" placeholder="Username" />
+            </div>
+            
+            <div class="input-group">
+                <i class="fa-solid fa-lock input-icon"></i>
                 <input type="password" id="login-pass" placeholder="Password" />
-                <button onclick="handleAuth('login')" id="btn-login">
-                    <span class="btn-text">Login</span>
-                    <div class="spinner"></div>
-                </button>
-                <p id="login-msg" class="error"></p>
-                <div class="auth-links">
-                    <span class="toggle-link" onclick="prepareChangePass()">Change Password?</span>
-                    <span class="toggle-link" onclick="showView('signup-view')">Sign Up</span>
-                </div>
             </div>
 
-            <div id="signup-view" class="auth-box" style="display:none;">
-                <h2>Create Account</h2>
+            <button onclick="handleAuth('login')" id="btn-login" class="primary-btn">
+                <span class="btn-text">Login</span>
+                <div class="spinner"></div>
+            </button>
+            
+            <p id="login-msg" class="message"></p>
+            
+            <div class="auth-actions">
+                <span onclick="prepareChangePass()">Change Password</span>
+                <span onclick="showView('signup-view')">Create Account</span>
+            </div>
+        </div>
+
+        <div id="signup-view" class="card auth-card" style="display:none;">
+            <h2>Create Account</h2>
+            <p class="subtitle">Join the system</p>
+
+            <div class="input-group">
+                <i class="fa-solid fa-user input-icon"></i>
                 <input type="text" id="signup-user" placeholder="Choose Username" />
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock input-icon"></i>
                 <input type="password" id="signup-pass" placeholder="Choose Password" />
-                <button onclick="handleAuth('signup')" id="btn-signup">
-                    <span class="btn-text">Sign Up</span>
-                    <div class="spinner"></div>
-                </button>
-                <button class="secondary" onclick="showView('login-view')">Back</button>
-                <p id="signup-msg" class="error"></p>
             </div>
 
-            <div id="change-pass-view" class="auth-box" style="display:none;">
-                <h2>Change Password</h2>
+            <button onclick="handleAuth('signup')" id="btn-signup" class="primary-btn">
+                <span class="btn-text">Sign Up</span>
+                <div class="spinner"></div>
+            </button>
+            <button class="text-btn" onclick="showView('login-view')">Back to Login</button>
+            <p id="signup-msg" class="message"></p>
+        </div>
+
+        <div id="change-pass-view" class="card auth-card" style="display:none;">
+            <h2>Update Password</h2>
+            
+            <div class="input-group">
+                <i class="fa-solid fa-user input-icon"></i>
                 <input type="text" id="cp-user" placeholder="Username" />
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-key input-icon"></i>
                 <input type="password" id="cp-old" placeholder="Old Password" />
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock input-icon"></i>
                 <input type="password" id="cp-new" placeholder="New Password" />
-                <button onclick="handleAuth('change_password')" id="btn-cp">
-                    <span class="btn-text">Update</span>
-                    <div class="spinner"></div>
-                </button>
-                <button class="secondary" onclick="showView('login-view')">Cancel</button>
-                <p id="cp-msg" class="error"></p>
             </div>
 
-            <div id="inventory-section">
-                <div class="header-row">
-                    <h1 class="page-title">Fridge Inventory</h1>
-                </div>
-                <table id="inventory" class="display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Qty</th>
-                            <th>Unit</th>
-                            <th>Category</th>
-                            <th>Expiry</th>
-                            <th>Status</th>
-                            <th>Days Left</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            <button onclick="handleAuth('change_password')" id="btn-cp" class="primary-btn">
+                <span class="btn-text">Update</span>
+                <div class="spinner"></div>
+            </button>
+            <button class="text-btn" onclick="showView('login-view')">Cancel</button>
+            <p id="cp-msg" class="message"></p>
+        </div>
+
+        <div id="inventory-section" class="inventory-wrapper">
+            <h1 class="page-title">My Inventory</h1>
+            
+            <table id="inventory" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Category</th>
+                        <th>Expiry</th>
+                        <th>Status</th>
+                        <th>Days Left</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </main>
 
