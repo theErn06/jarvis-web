@@ -1,150 +1,142 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fridge Inventory System</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <div class="mobile-header">
+        <button class="menu-trigger" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <span class="mobile-title">Jarvis Inventory</span>
+    </div>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <nav class="sidebar">
-      <div class="menu-header">
-        <div class="nav-icon-container">
-          <i class="fa-solid fa-bars nav-fa" style="color: #555"></i>
+    <div class="mobile-backdrop" onclick="toggleMobileMenu()"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="menu-header">
+            <div class="nav-icon-container">
+                <i class="fa-solid fa-bars nav-fa" style="color: #555;"></i>
+            </div>
+            <span class="nav-text">Menu</span>
+            <button class="mobile-close-btn" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
-        <span class="nav-text">Menu</span>
-      </div>
 
-      <ul class="nav-links">
-        <li>
-          <a href="#" class="nav-item">
-            <div class="nav-icon-container">
-              <img src="jarvis-icon.jpg" alt="Jarvis" class="nav-img" />
-            </div>
-            <span class="nav-text">Jarvis</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="nav-item">
-            <div class="nav-icon-container">
-              <img src="guide-icon.jpg" alt="Guide" class="nav-img" />
-            </div>
-            <span class="nav-text">Guide</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="nav-item">
-            <div class="nav-icon-container">
-              <i class="fa-solid fa-circle-info nav-fa" style="color: #555"></i>
-            </div>
-            <span class="nav-text">About Us</span>
-          </a>
-        </li>
-      </ul>
+        <ul class="nav-links">
+            <li>
+                <a href="#" class="nav-item">
+                    <div class="nav-icon-container">
+                        <img src="pic/jarvis-icon.jpg" alt="Jarvis" class="nav-img">
+                    </div>
+                    <span class="nav-text">Jarvis</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item">
+                    <div class="nav-icon-container">
+                        <img src="pic/guide-icon.jpg" alt="Guide" class="nav-img">
+                    </div>
+                    <span class="nav-text">Guide</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item">
+                    <div class="nav-icon-container">
+                        <i class="fa-solid fa-circle-info nav-fa" style="color: #555;"></i>
+                    </div>
+                    <span class="nav-text">About Us</span>
+                </a>
+            </li>
+        </ul>
 
-      <div class="bottom-section" id="logout-section" style="display: none">
-        <a href="#" onclick="logout()" class="nav-item" style="color: #ff5252">
-          <div class="nav-icon-container">
-            <i class="fa-solid fa-right-from-bracket nav-fa"></i>
-          </div>
-          <span class="nav-text">Log Out</span>
-        </a>
-      </div>
+        <div class="bottom-section" id="logout-section" style="display: none;">
+            <a href="#" onclick="logout()" class="nav-item" style="color: #ff5252;">
+                <div class="nav-icon-container">
+                    <i class="fa-solid fa-right-from-bracket nav-fa"></i>
+                </div>
+                <span class="nav-text">Log Out</span>
+            </a>
+        </div>
     </nav>
 
     <main class="main-content">
-      <div class="container">
-        <div id="login-view" class="auth-box">
-          <h2>Inventory System</h2>
-          <h3>Login</h3>
-          <input type="text" id="login-user" placeholder="Username" />
-          <input type="password" id="login-pass" placeholder="Password" />
-          <button onclick="handleAuth('login')" id="btn-login">
-            <span class="btn-text">Login</span>
-            <div class="spinner"></div>
-          </button>
-          <p id="login-msg" class="error"></p>
-          <div class="auth-links">
-            <span class="toggle-link" onclick="prepareChangePass()"
-              >Change Password?</span
-            >
-            <span class="toggle-link" onclick="showView('signup-view')"
-              >Sign Up</span
-            >
-          </div>
-        </div>
+        <div class="container">
+            
+            <div id="login-view" class="auth-box">
+                <h2>Welcome Back</h2>
+                <h3>Login to continue</h3>
+                <input type="text" id="login-user" placeholder="Username" />
+                <input type="password" id="login-pass" placeholder="Password" />
+                <button onclick="handleAuth('login')" id="btn-login">
+                    <span class="btn-text">Login</span>
+                    <div class="spinner"></div>
+                </button>
+                <p id="login-msg" class="error"></p>
+                <div class="auth-links">
+                    <span class="toggle-link" onclick="prepareChangePass()">Change Password?</span>
+                    <span class="toggle-link" onclick="showView('signup-view')">Sign Up</span>
+                </div>
+            </div>
 
-        <div id="signup-view" class="auth-box" style="display: none">
-          <h2>Create Account</h2>
-          <input type="text" id="signup-user" placeholder="Choose Username" />
-          <input
-            type="password"
-            id="signup-pass"
-            placeholder="Choose Password"
-          />
-          <button onclick="handleAuth('signup')" id="btn-signup">
-            <span class="btn-text">Sign Up</span>
-            <div class="spinner"></div>
-          </button>
-          <button class="secondary" onclick="showView('login-view')">
-            Back
-          </button>
-          <p id="signup-msg" class="error"></p>
-        </div>
+            <div id="signup-view" class="auth-box" style="display:none;">
+                <h2>Create Account</h2>
+                <input type="text" id="signup-user" placeholder="Choose Username" />
+                <input type="password" id="signup-pass" placeholder="Choose Password" />
+                <button onclick="handleAuth('signup')" id="btn-signup">
+                    <span class="btn-text">Sign Up</span>
+                    <div class="spinner"></div>
+                </button>
+                <button class="secondary" onclick="showView('login-view')">Back</button>
+                <p id="signup-msg" class="error"></p>
+            </div>
 
-        <div id="change-pass-view" class="auth-box" style="display: none">
-          <h2>Change Password</h2>
-          <input type="text" id="cp-user" placeholder="Username" />
-          <input type="password" id="cp-old" placeholder="Old Password" />
-          <input type="password" id="cp-new" placeholder="New Password" />
-          <button onclick="handleAuth('change_password')" id="btn-cp">
-            <span class="btn-text">Update</span>
-            <div class="spinner"></div>
-          </button>
-          <button class="secondary" onclick="showView('login-view')">
-            Cancel
-          </button>
-          <p id="cp-msg" class="error"></p>
-        </div>
+            <div id="change-pass-view" class="auth-box" style="display:none;">
+                <h2>Change Password</h2>
+                <input type="text" id="cp-user" placeholder="Username" />
+                <input type="password" id="cp-old" placeholder="Old Password" />
+                <input type="password" id="cp-new" placeholder="New Password" />
+                <button onclick="handleAuth('change_password')" id="btn-cp">
+                    <span class="btn-text">Update</span>
+                    <div class="spinner"></div>
+                </button>
+                <button class="secondary" onclick="showView('login-view')">Cancel</button>
+                <p id="cp-msg" class="error"></p>
+            </div>
 
-        <div id="inventory-section">
-          <div class="header-row">
-            <h1 class="page-title">Fridge Inventory</h1>
-          </div>
-          <div class="table-responsive">
-            <table id="inventory" class="display" style="width: 100%">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Qty</th>
-                  <th>Unit</th>
-                  <th>Category</th>
-                  <th>Expiry</th>
-                  <th>Status</th>
-                  <th>Days Left</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
+            <div id="inventory-section">
+                <div class="header-row">
+                    <h1 class="page-title">Fridge Inventory</h1>
+                </div>
+                <table id="inventory" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Category</th>
+                            <th>Expiry</th>
+                            <th>Status</th>
+                            <th>Days Left</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
-      </div>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
-
