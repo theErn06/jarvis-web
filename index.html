@@ -24,7 +24,7 @@
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo-area">
-                <img src="jarvis-icon.jpg" alt="Logo" class="header-logo-img">
+                <img src="jarvis-icon.jpg" alt="Logo" class="header-logo-img" width="28" height="28">
                 <span class="nav-text header-text">Menu</span>
             </div>
             <button class="close-btn" onclick="toggleMenu()">
@@ -36,19 +36,21 @@
             <li>
                 <a href="#" class="nav-item">
                     <span class="icon-box">
-                        <img src="jarvis-icon.jpg" alt="Jarvis" class="custom-icon">
+                        <img src="jarvis-icon.jpg" alt="Jarvis" class="custom-icon" width="24" height="24">
                     </span>
                     <span class="nav-text">Jarvis</span>
                 </a>
             </li>
+            
             <li>
                 <a href="#" class="nav-item">
                     <span class="icon-box">
-                        <img src="guide-icon.jpg" alt="Guide" class="custom-icon">
+                        <img src="guide-icon.jpg" alt="Guide" class="custom-icon" width="24" height="24">
                     </span>
                     <span class="nav-text">Guide</span>
                 </a>
             </li>
+            
             <li>
                 <a href="#" class="nav-item">
                     <span class="icon-box">
@@ -74,7 +76,6 @@
         <div id="login-view" class="card auth-card">
             <h2>Welcome Back</h2>
             <p class="subtitle">Please login to your dashboard</p>
-            
             <div class="input-group">
                 <i class="fa-solid fa-user input-icon"></i>
                 <input type="text" id="login-user" placeholder="Username" />
@@ -83,7 +84,6 @@
                 <i class="fa-solid fa-lock input-icon"></i>
                 <input type="password" id="login-pass" placeholder="Password" />
             </div>
-
             <button onclick="handleAuth('login')" id="btn-login" class="primary-btn">
                 <span class="btn-text">Login</span>
                 <div class="spinner"></div>
