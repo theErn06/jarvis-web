@@ -5,9 +5,24 @@ let currentPass = null;
 
 $(document).ready(function() {
     toggleLogoutButton(false);
+
+    // --- NEW: LINK MOBILE SEARCH TO DATATABLES ---
+    $('#mobile-search-input').on('keyup', function() {
+        if ($.fn.DataTable.isDataTable('#inventory')) {
+            $('#inventory').DataTable().search(this.value).draw();
+        }
+    });
+
+    // --- NEW: LINK MOBILE SORT TO DATATABLES ---
+    $('#mobile-sort-select').on('change', function() {
+        if ($.fn.DataTable.isDataTable('#inventory')) {
+            let val = $(this).val();
+            let [col, dir] = val.split('_'); // e.g. "0_asc" -> col 0, direction asc
+            $('#inventory').DataTable().order([parseInt(col), dir]).draw();
+        }
+    });
 });
 
-// --- MOBILE MENU LOGIC ---
 function toggleMenu() {
     $('#sidebar').toggleClass('open');
     $('.overlay').toggleClass('active');
@@ -18,22 +33,15 @@ function toggleLogoutButton(show) {
     else $('#logout-section').hide();
 }
 
-// --- VIEW NAVIGATION ---
 function showView(viewId) {
-    // Close menu if open (for mobile)
     $('#sidebar').removeClass('open');
     $('.overlay').removeClass('active');
-
-    // Hide all, show target
     $('.card, .inventory-wrapper').hide();
     $('#' + viewId).fadeIn();
-    
-    // Clear messages
     $('.message').text('').removeClass('error');
     $('input').val('');
 }
 
-// --- AUTHENTICATION ---
 function handleAuth(action) {
     let payload = { action: action };
     let msgBox, btn;
@@ -76,7 +84,7 @@ function handleAuth(action) {
                 if (action === 'login' || action === 'signup') {
                     currentUser = payload.username;
                     currentPass = payload.password;
-                    $('.card').hide(); // Hide login cards
+                    $('.card').hide();
                     $('#inventory-section').fadeIn();
                     toggleLogoutButton(true);
                     loadTable();
@@ -95,7 +103,6 @@ function handleAuth(action) {
     });
 }
 
-// --- DATATABLE LOADING ---
 function loadTable() {
     if ($.fn.DataTable.isDataTable('#inventory')) {
         $('#inventory').DataTable().ajax.reload();
@@ -105,18 +112,15 @@ function loadTable() {
     $('#inventory').DataTable({
         processing: true,
         pageLength: 10,
-        lengthChange: false, // Cleaner UI
+        lengthChange: false, 
         language: { search: "", searchPlaceholder: "Search items..." },
         
-        // CRITICAL: Adds labels for Mobile Card View
+        // Add data-labels for Mobile Card View
         createdRow: function (row, data, dataIndex) {
-            $('td', row).eq(0).attr('data-label', 'Item');
-            $('td', row).eq(1).attr('data-label', 'Qty');
-            $('td', row).eq(2).attr('data-label', 'Unit');
-            $('td', row).eq(3).attr('data-label', 'Category');
-            $('td', row).eq(4).attr('data-label', 'Expiry');
-            $('td', row).eq(5).attr('data-label', 'Status');
-            $('td', row).eq(6).attr('data-label', 'Days Left');
+            const labels = ['Item', 'Qty', 'Unit', 'Category', 'Expiry', 'Status', 'Days Left'];
+            $('td', row).each(function(i) {
+                $(this).attr('data-label', labels[i]);
+            });
         },
         
         ajax: function (data, callback, settings) {
