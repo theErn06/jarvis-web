@@ -1,97 +1,101 @@
 :root {
-    --sidebar-width-collapsed: 60px;
-    --sidebar-width-expanded: 220px;
-    --nav-item-height: 55px;
-    /* Glass / Transparent Theme */
-    --glass-bg: rgba(255, 255, 255, 0.75);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --sidebar-bg: rgba(255, 255, 255, 0.85);
-    --text-color: #333333;
-    --accent-color: #00bcd4; /* Jarvis Cyan */
-    --hover-color: rgba(0, 188, 212, 0.15);
-    --transition-speed: 0.3s;
+    --primary: #00bcd4;
+    --primary-dark: #0097a7;
+    --bg-body: #f4f7f6;
+    --bg-white: #ffffff;
+    --text-dark: #2c3e50;
+    --text-light: #95a5a6;
+    --sidebar-width: 65px;
+    --sidebar-width-open: 240px;
+    --header-height: 60px;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
 }
 
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    font-size: 16px; /* Larger base font for mobile readability */
-    margin: 0; 
-    padding: 0;
-    display: flex; 
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    display: flex;
     min-height: 100vh;
-    /* Soft Gradient Background */
-    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-    background-attachment: fixed; /* Keeps bg still while scrolling */
-    color: #333;
 }
 
-/* --- SIDEBAR --- */
+/* --- 1. MOBILE HEADER (Visible only on phone) --- */
+.mobile-header {
+    display: none; /* Hidden on laptop */
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-height);
+    background: var(--bg-white);
+    align-items: center;
+    padding: 0 15px;
+    box-shadow: var(--shadow);
+    z-index: 100;
+}
+
+.menu-btn {
+    background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer;
+}
+
+.logo-text {
+    margin-left: 15px; font-weight: bold; font-size: 1.2rem; color: var(--primary);
+}
+
+/* --- 2. SIDEBAR (Desktop: Left, Mobile: Drawer) --- */
 .sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: var(--sidebar-width-collapsed);
-    background-color: var(--sidebar-bg);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--bg-white);
+    box-shadow: var(--shadow);
+    z-index: 200;
+    transition: width 0.3s ease, transform 0.3s ease;
     display: flex;
     flex-direction: column;
-    transition: all var(--transition-speed) ease;
-    z-index: 1000;
-    box-shadow: 2px 0 15px rgba(0,0,0,0.05);
-    white-space: nowrap;
     overflow: hidden;
-    border-right: 1px solid var(--glass-border);
+    white-space: nowrap;
 }
 
-.sidebar:hover {
-    width: var(--sidebar-width-expanded);
+/* Hover to expand on Desktop */
+@media (min-width: 769px) {
+    .sidebar:hover { width: var(--sidebar-width-open); }
 }
 
-.menu-header {
-    height: 70px;
+.sidebar-header {
+    height: var(--header-height);
     display: flex;
     align-items: center;
-    padding-left: 18px; 
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    color: var(--accent-color);
-    font-size: 1.1rem;
-    font-weight: bold;
-    justify-content: space-between; /* To push close button to right */
+    justify-content: space-between;
+    padding: 0 18px;
+    border-bottom: 1px solid #eee;
 }
 
-/* Mobile Close Button (Hidden on Desktop) */
-.mobile-close-btn {
-    display: none; 
-    background: none; 
-    border: none; 
-    font-size: 1.2rem; 
-    color: #666; 
-    cursor: pointer; 
-    margin-right: 15px;
-}
+.logo-area { display: flex; align-items: center; }
+.header-text { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
+.close-btn { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
 
-.nav-links { list-style: none; padding: 0; margin: 0; width: 100%; }
+.nav-links { list-style: none; padding: 0; margin: 20px 0; width: 100%; }
 
 .nav-item {
     display: flex;
     align-items: center;
-    height: var(--nav-item-height);
+    height: 50px;
     text-decoration: none;
-    color: var(--text-color);
-    transition: all 0.2s;
+    color: var(--text-dark);
+    transition: background 0.2s;
+    padding-left: 18px;
     cursor: pointer;
-    padding-left: 18px; 
 }
 
 .nav-item:hover {
-    background-color: var(--hover-color);
-    border-left: 4px solid var(--accent-color);
-    padding-left: 14px;
+    background-color: #f0fbfd; /* Light Cyan */
+    border-left: 3px solid var(--primary);
+    padding-left: 15px;
 }
 
-.nav-icon-container {
+.icon-box {
     min-width: 30px;
     display: flex;
     justify-content: center;
@@ -99,224 +103,181 @@ body {
     margin-right: 15px;
 }
 
-.nav-img {
-    width: 26px;
-    height: 26px;
-    object-fit: cover;
-    border-radius: 6px;
-}
+.custom-icon { width: 24px; height: 24px; border-radius: 4px; object-fit: cover; }
+.nav-icon { font-size: 1.2rem; color: #555; }
+.nav-text { opacity: 0; transition: opacity 0.2s; }
 
-.nav-fa { font-size: 1.2rem; }
+/* Show text on hover (desktop) or when open (mobile) */
+.sidebar:hover .nav-text, .sidebar.open .nav-text { opacity: 1; }
 
-.nav-text {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-    font-size: 1rem;
-}
+.bottom-section { margin-top: auto; border-top: 1px solid #eee; }
+.logout-item { color: #e74c3c; }
+.logout-item:hover { background-color: #fceceb; border-left-color: #e74c3c; }
 
-.sidebar:hover .nav-text {
-    opacity: 1;
-    pointer-events: auto;
-    transition-delay: 0.1s;
-}
 
-.bottom-section {
-    margin-top: auto;
-    border-top: 1px solid rgba(0,0,0,0.05);
-}
-
-/* --- MAIN CONTENT --- */
+/* --- 3. MAIN CONTENT --- */
 .main-content {
-    margin-left: var(--sidebar-width-collapsed);
-    flex-grow: 1;
-    padding: 30px;
-    min-height: 100vh;
-    box-sizing: border-box;
-    transition: margin-left var(--transition-speed);
+    flex: 1;
+    margin-left: var(--sidebar-width); /* Push content right */
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: margin-left 0.3s ease;
 }
 
-/* --- CONTAINER (Glass Card) --- */
-.container { 
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+/* --- 4. CARDS (Login/Signup/Inventory) --- */
+.card {
+    background: var(--bg-white);
     padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-    border: 1px solid var(--glass-border);
-    width: 100%; 
-    max-width: 900px;
-    margin: auto; 
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
 
-/* --- FORMS --- */
-.auth-box { max-width: 340px; margin: 0 auto; text-align: center; }
-.auth-links { margin-top:20px; display:flex; justify-content:space-between; }
+.auth-card h2 { margin-bottom: 5px; color: var(--text-dark); }
+.subtitle { color: var(--text-light); margin-bottom: 25px; font-size: 0.9rem; }
 
-h2 { font-size: 1.8rem; margin-bottom: 5px; color: #333; }
-h3 { font-size: 1rem; margin-bottom: 20px; color: #777; font-weight: 400; }
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
 
-input { 
-    width: 100%; 
-    padding: 14px 16px;
-    margin: 10px 0; 
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 10px; 
-    box-sizing: border-box; 
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+input {
+    width: 100%;
+    padding: 12px 12px 12px 40px; /* Space for icon */
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 1rem;
-    background: rgba(255,255,255,0.6);
+    outline: none;
+    transition: border 0.3s;
+}
+
+input:focus { border-color: var(--primary); }
+
+.primary-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
     transition: background 0.2s;
 }
-input:focus { background: #fff; outline: 2px solid var(--accent-color); border-color: transparent; }
 
-button { 
-    width: 100%; 
-    padding: 14px;
-    background-color: var(--accent-color); 
-    color: white; 
-    border: none; 
-    border-radius: 10px; 
-    cursor: pointer; 
-    margin-top: 15px; 
-    font-weight: 700; 
-    font-size: 1rem;
-    transition: transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.primary-btn:hover { background: var(--primary-dark); }
+.primary-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+.text-btn {
+    background: none; border: none; color: #777; margin-top: 10px; cursor: pointer; text-decoration: underline;
 }
-button:active { transform: scale(0.98); }
-button:disabled { background-color: #bdc3c7; cursor: not-allowed; transform: none; }
 
-.secondary { background-color: #95a5a6; }
-.error { color: #c0392b; display: none; margin-top: 10px; background: rgba(231, 76, 60, 0.15); padding: 10px; border-radius: 8px; font-size: 0.9rem; }
-.toggle-link { color: var(--accent-color); cursor: pointer; font-size: 0.9rem; font-weight: 600; }
+.auth-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: var(--primary);
+    cursor: pointer;
+}
 
-.spinner { display: none; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s infinite; margin: 0 auto; }
+.message { margin-top: 10px; font-size: 0.9rem; min-height: 20px; }
+.message.error { color: #e74c3c; }
+
+.spinner {
+    display: none; width: 18px; height: 18px;
+    border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff;
+    animation: spin 1s infinite; margin: 0 auto;
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* --- INVENTORY TABLE --- */
-#inventory-section { display: none; width: 100%; }
-.header-row { margin-bottom: 25px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 15px; }
-.page-title { margin: 0; font-size: 1.8rem; color: #333; }
+/* --- 5. INVENTORY TABLE --- */
+.inventory-wrapper { width: 100%; max-width: 1000px; display: none; }
+.page-title { margin-bottom: 20px; color: var(--text-dark); font-size: 1.8rem; }
 
-/* DataTables Styling */
-table.dataTable { border-collapse: collapse !important; width: 100% !important; margin-top: 10px !important; }
-table.dataTable thead th { border-bottom: 2px solid rgba(0,0,0,0.1) !important; color: #555; font-weight: 700; padding: 12px 10px; }
-table.dataTable tbody td { padding: 14px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); color: #444; }
-
-/* Mobile Header (Hidden by default) */
-.mobile-header { display: none; }
-.mobile-backdrop { display: none; }
+/* DataTables Customization */
+table.dataTable thead th { text-align: left; color: #555; border-bottom: 2px solid #eee; padding: 15px 10px; }
+table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; color: #444; }
 
 
-/* ========================================= */
-/* MOBILE RESPONSIVE             */
-/* ========================================= */
-
-@media screen and (max-width: 768px) {
+/* ================================================= */
+/* MOBILE RESPONSIVE RULES               */
+/* ================================================= */
+@media (max-width: 768px) {
     
-    /* 1. Header & Menu Trigger */
-    .mobile-header {
-        display: flex;
-        align-items: center;
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        height: 60px;
-        background: rgba(255,255,255,0.95);
-        backdrop-filter: blur(10px);
-        z-index: 900;
-        padding: 0 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    
-    .menu-trigger {
-        background: none; border: none; font-size: 1.4rem; color: #333; cursor: pointer; padding: 5px; margin-right: 15px; width: auto; margin-top: 0; box-shadow: none;
-    }
-    .mobile-title { font-weight: bold; font-size: 1.2rem; color: var(--accent-color); }
-
-    /* 2. Sidebar (Off-Canvas Behavior) */
-    .sidebar {
-        transform: translateX(-100%); /* Hide sidebar off-screen */
-        width: 260px; /* Fixed width when open */
-        height: 100%;
-        background: #fff;
-        z-index: 2000;
-        border-right: none;
-        box-shadow: 5px 0 25px rgba(0,0,0,0.2);
-    }
-
-    /* Class added via JS to open menu */
-    .sidebar.mobile-open { transform: translateX(0); }
-    
-    /* Show text immediately on mobile menu */
-    .nav-text { opacity: 1; pointer-events: auto; }
-    
-    /* Show Close Button */
-    .mobile-close-btn { display: block; }
-
-    /* Backdrop */
-    .mobile-backdrop {
-        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.4);
-        z-index: 1500;
-        backdrop-filter: blur(3px);
-        display: none; /* Toggled via JS */
-    }
-    .mobile-backdrop.active { display: block; }
-
-
-    /* 3. Main Content Adjustments */
+    /* A. Layout Adjustments */
+    .mobile-header { display: flex; } /* Show Top Bar */
     .main-content {
-        margin-left: 0; /* No sidebar space needed */
-        padding: 80px 15px 20px 15px; /* Top padding clears the fixed header */
+        margin-left: 0; /* Remove sidebar gap */
+        padding: 80px 15px 20px 15px; /* Add top padding for header */
+        align-items: stretch; /* Full width cards */
     }
 
-    .container {
-        padding: 1.5rem;
-        border-radius: 12px;
-        background: rgba(255,255,255,0.9);
+    /* B. Sidebar becomes Drawer */
+    .sidebar {
+        transform: translateX(-100%); /* Hide off-screen */
+        width: 250px;
+        transition: transform 0.3s ease;
     }
+    .sidebar.open { transform: translateX(0); } /* Slide in */
+    .close-btn { display: block; }
+    .nav-text { opacity: 1; }
 
-    /* 4. Auth Forms */
-    .auth-box { max-width: 100%; }
-    h2 { font-size: 1.5rem; }
-    input, button { padding: 12px; }
+    /* C. Overlay */
+    .overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 150;
+        display: none; opacity: 0; transition: opacity 0.3s;
+    }
+    .overlay.active { display: block; opacity: 1; }
 
-    /* 5. CARD VIEW FOR TABLE (The Magic Part) */
-    
-    /* Hide the Table Header */
-    table.dataTable thead { display: none; }
+    /* D. Table becomes Cards (The crucial fix for small screens) */
+    table.dataTable thead { display: none; } /* Hide Headers */
     
     table.dataTable tbody tr {
         display: block;
         background: #fff;
         margin-bottom: 15px;
         border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         padding: 15px;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid #eee;
     }
 
     table.dataTable tbody td {
         display: flex;
         justify-content: space-between;
-        align-items: center;
         text-align: right;
-        padding: 8px 0;
-        border-bottom: 1px solid #f0f0f0;
+        padding: 10px 0;
+        border-bottom: 1px solid #f9f9f9;
         font-size: 0.95rem;
     }
     
     table.dataTable tbody td:last-child { border-bottom: none; }
 
-    /* Inject Labels via CSS (Requires data-label in HTML/JS) */
+    /* Inject labels using data-label attribute from JS */
     table.dataTable tbody td::before {
         content: attr(data-label);
-        font-weight: 700;
-        color: #777;
+        font-weight: 600;
+        color: #888;
+        font-size: 0.85rem;
         text-transform: uppercase;
-        font-size: 0.8rem;
-        text-align: left;
-        margin-right: 20px;
     }
+
+    /* E. Card Sizing */
+    .card { max-width: 100%; padding: 2rem 1.5rem; }
 }
