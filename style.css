@@ -1,7 +1,7 @@
 :root {
     --primary: #00bcd4;
     --primary-dark: #0097a7;
-    --bg-body: #f4f7f6;
+    --bg-body: #ffffff; /* FIXED: Pure White */
     --bg-white: #ffffff;
     --text-dark: #2c3e50;
     --text-light: #95a5a6;
@@ -18,13 +18,13 @@ body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background-color: var(--bg-body);
     color: var(--text-dark);
-    display: flex;
+    display: block; /* FIXED: Changed from flex to block to prevent layout breakage */
     min-height: 100vh;
 }
 
-/* --- 1. MOBILE HEADER --- */
+/* --- 1. MOBILE HEADER (Hidden on Laptop) --- */
 .mobile-header {
-    display: none;
+    display: none; /* STRICTLY HIDDEN ON DESKTOP */
     position: fixed;
     top: 0; left: 0; right: 0;
     height: var(--header-height);
@@ -42,8 +42,8 @@ body {
     position: fixed;
     top: 0; left: 0; bottom: 0;
     width: var(--sidebar-width);
-    background: var(--bg-white);
-    box-shadow: var(--shadow);
+    background: #fcfcfc; /* Slight off-white for separation */
+    border-right: 1px solid #eee;
     z-index: 200;
     transition: width 0.3s ease, transform 0.3s ease;
     display: flex;
@@ -51,7 +51,8 @@ body {
     overflow: hidden;
     white-space: nowrap;
 }
-@media (min-width: 769px) { .sidebar:hover { width: var(--sidebar-width-open); } }
+@media (min-width: 769px) { .sidebar:hover { width: var(--sidebar-width-open); box-shadow: var(--shadow); } }
+
 .sidebar-header {
     height: var(--header-height);
     display: flex;
@@ -63,6 +64,7 @@ body {
 .logo-area { display: flex; align-items: center; }
 .header-text { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
 .close-btn { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+
 .nav-links { list-style: none; padding: 0; margin: 20px 0; width: 100%; }
 .nav-item {
     display: flex; align-items: center; height: 50px; text-decoration: none;
@@ -76,21 +78,26 @@ body {
 .sidebar:hover .nav-text, .sidebar.open .nav-text { opacity: 1; }
 .bottom-section { margin-top: auto; border-top: 1px solid #eee; }
 .logout-item { color: #e74c3c; }
-.logout-item:hover { background-color: #fceceb; border-left-color: #e74c3c; }
+.logout-item:hover { background-color: #fff5f5; border-left-color: #e74c3c; }
 
-/* --- 3. MAIN CONTENT --- */
+/* --- 3. MAIN CONTENT (Layout Fix) --- */
 .main-content {
-    flex: 1;
-    margin-left: var(--sidebar-width);
+    /* FIXED: This ensures content sits next to sidebar, not under or squished */
+    margin-left: var(--sidebar-width); 
     padding: 40px;
-    display: flex; flex-direction: column; align-items: center;
+    width: calc(100% - var(--sidebar-width));
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     transition: margin-left 0.3s ease;
 }
 
 /* --- 4. CARDS & FORMS --- */
 .card {
     background: var(--bg-white); padding: 2.5rem; border-radius: 12px;
-    box-shadow: var(--shadow); width: 100%; max-width: 400px; text-align: center;
+    border: 1px solid #eee; /* Light border for visibility on white */
+    width: 100%; max-width: 400px; text-align: center; margin-top: 50px;
 }
 .auth-card h2 { margin-bottom: 5px; color: var(--text-dark); }
 .subtitle { color: var(--text-light); margin-bottom: 25px; font-size: 0.9rem; }
@@ -119,65 +126,60 @@ input:focus { border-color: var(--primary); }
 
 /* --- 5. INVENTORY & MOBILE CONTROLS --- */
 .inventory-wrapper { width: 100%; max-width: 1000px; display: none; }
-.page-title { margin-bottom: 20px; color: var(--text-dark); font-size: 1.8rem; }
+.page-title { margin-bottom: 20px; color: var(--text-dark); font-size: 2rem; }
 
-/* Mobile Controls - HIDDEN ON DESKTOP */
-.mobile-controls { display: none; } 
+/* FIX #1: HIDE MOBILE CONTROLS ON DESKTOP */
+.mobile-controls { display: none !important; }
 
-/* Table Styling */
-table.dataTable thead th { text-align: left; color: #555; border-bottom: 2px solid #eee; padding: 15px 10px; }
-table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; color: #444; }
+/* DataTables Styling for White Theme */
+table.dataTable thead th { text-align: left; color: #555; border-bottom: 2px solid #ddd; padding: 15px 10px; background: #fff; }
+table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; color: #444; background: #fff; }
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { margin-bottom: 15px; color: #333; }
 
 
 /* ================================================= */
-/* MOBILE RESPONSIVE RULES               */
+/* MOBILE RESPONSIVE RULES (Max Width 768px)         */
 /* ================================================= */
 @media (max-width: 768px) {
     
-    .mobile-header { display: flex; }
-    .main-content { margin-left: 0; padding: 80px 15px 20px 15px; align-items: stretch; }
+    .mobile-header { display: flex; } /* Show Header */
+    
+    .main-content { 
+        margin-left: 0; 
+        padding: 80px 15px 20px 15px; 
+        width: 100%;
+    }
 
-    /* Drawer */
-    .sidebar { transform: translateX(-100%); width: 250px; transition: transform 0.3s ease; }
+    /* Drawer Sidebar */
+    .sidebar { transform: translateX(-100%); width: 250px; transition: transform 0.3s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
     .sidebar.open { transform: translateX(0); }
     .close-btn { display: block; }
     .nav-text { opacity: 1; }
 
+    /* Overlay */
     .overlay {
         position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);
         z-index: 150; display: none; opacity: 0; transition: opacity 0.3s;
     }
     .overlay.active { display: block; opacity: 1; }
 
-    /* --- MOBILE CONTROLS (VISIBLE) --- */
-    .mobile-controls {
-        display: flex; gap: 10px; margin-bottom: 15px;
-    }
+    /* FIX #1: SHOW MOBILE CONTROLS / HIDE DESKTOP SEARCH */
+    .mobile-controls { display: flex !important; gap: 10px; margin-bottom: 15px; }
+    .dataTables_filter, .dataTables_length { display: none !important; } /* Hide default table search */
     
-    .mobile-search-box {
-        flex: 2; position: relative;
-    }
-    .mobile-search-box i {
-        position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #aaa;
-    }
-    .mobile-search-box input {
-        padding-left: 35px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+    /* Mobile Search Styles */
+    .mobile-search-box { flex: 2; position: relative; }
+    .mobile-search-box i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #aaa; }
+    .mobile-search-box input { padding-left: 35px; border-radius: 20px; border: 1px solid #eee; }
     
     .mobile-sort-box { flex: 1; }
-    .mobile-sort-box select {
-        width: 100%; padding: 12px; border-radius: 20px; border: 1px solid #eee;
-        background: white; color: #555; outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+    .mobile-sort-box select { width: 100%; padding: 12px; border-radius: 20px; border: 1px solid #eee; background: white; outline: none; }
 
-    /* Hide default DT search on mobile to prevent duplicate */
-    .dataTables_filter { display: none; }
-
-    /* Cards Layout */
+    /* Cards Layout for Table */
     table.dataTable thead { display: none; }
     table.dataTable tbody tr {
         display: block; background: #fff; margin-bottom: 15px; border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px; border: 1px solid #eee;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 15px; border: 1px solid #eee;
     }
     table.dataTable tbody td {
         display: flex; justify-content: space-between; text-align: right;
@@ -185,8 +187,8 @@ table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0;
     }
     table.dataTable tbody td:last-child { border-bottom: none; }
     table.dataTable tbody td::before {
-        content: attr(data-label); font-weight: 600; color: #888; font-size: 0.85rem; text-transform: uppercase;
+        content: attr(data-label); font-weight: 700; color: #999; font-size: 0.8rem; text-transform: uppercase;
     }
 
-    .card { max-width: 100%; padding: 2rem 1.5rem; }
+    .card { max-width: 100%; padding: 2rem 1.5rem; margin-top: 20px; border: none; box-shadow: none; }
 }
