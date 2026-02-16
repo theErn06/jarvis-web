@@ -4,11 +4,15 @@ let currentUser = null;
 let currentPass = null;
 let tableInstance = null;
 
-// On document load
 $(document).ready(function() {
-    // Ensure logout button is hidden initially
     toggleLogoutButton(false);
 });
+
+// --- MOBILE MENU FUNCTIONS ---
+function toggleMobileMenu() {
+    $('#sidebar').toggleClass('mobile-open');
+    $('.mobile-backdrop').toggleClass('active');
+}
 
 function toggleLogoutButton(show) {
     if (show) {
@@ -19,6 +23,10 @@ function toggleLogoutButton(show) {
 }
 
 function showView(viewId) {
+    // Close mobile menu if open when switching views
+    $('#sidebar').removeClass('mobile-open');
+    $('.mobile-backdrop').removeClass('active');
+
     $('.auth-box, #inventory-section').hide();
     $('#' + viewId).fadeIn();
     $('.error, .success').hide().text('');
@@ -74,7 +82,7 @@ function handleAuth(action) {
                     currentPass = payload.password;
                     $('.auth-box').hide();
                     $('#inventory-section').fadeIn();
-                    toggleLogoutButton(true); // SHOW LOGOUT BUTTON
+                    toggleLogoutButton(true);
                     loadTable();
                 } else if (action === 'signup') {
                     alert("Account created! Logging you in...");
@@ -82,7 +90,7 @@ function handleAuth(action) {
                     currentPass = payload.password;
                     $('.auth-box').hide();
                     $('#inventory-section').fadeIn();
-                    toggleLogoutButton(true); // SHOW LOGOUT BUTTON
+                    toggleLogoutButton(true);
                     loadTable();
                 } else if (action === 'change_password') {
                     alert("Password changed! Please login again."); 
@@ -108,8 +116,24 @@ function loadTable() {
 
     tableInstance = $('#inventory').DataTable({
         processing: true,
-        pageLength: 5,
-        lengthChange: false, // Simplify UI for minimal look
+        pageLength: 10,
+        lengthChange: false, // Simple UI
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search items..."
+        },
+        // --- CRITICAL FOR MOBILE CARD VIEW ---
+        // This adds 'data-label' to every cell so CSS can display it
+        createdRow: function (row, data, dataIndex) {
+            $('td', row).eq(0).attr('data-label', 'Item');
+            $('td', row).eq(1).attr('data-label', 'Qty');
+            $('td', row).eq(2).attr('data-label', 'Unit');
+            $('td', row).eq(3).attr('data-label', 'Category');
+            $('td', row).eq(4).attr('data-label', 'Expiry');
+            $('td', row).eq(5).attr('data-label', 'Status');
+            $('td', row).eq(6).attr('data-label', 'Days Left');
+        },
+        // -------------------------------------
         ajax: function (data, callback, settings) {
             $.ajax({
                 url: API_URL,
@@ -152,7 +176,7 @@ function loadTable() {
                 render: function (data) {
                     if (!data || data === "-") return "-";
                     let text = String(data); 
-                    return text.charAt(0).toUpperCase() + text.slice(1);
+                    return `<strong>${text.charAt(0).toUpperCase() + text.slice(1)}</strong>`;
                 }
             },
             { 
@@ -189,7 +213,17 @@ function loadTable() {
                     return moment(data).format('YYYY-MM-DD');
                 }
             },
-            { data: 'status', defaultContent: "N/A" },
+            { 
+                data: 'status', 
+                defaultContent: "N/A",
+                render: function(data) {
+                    // Optional: Add simple color coding
+                    let color = '#333';
+                    if(data === 'Expired') color = '#e74c3c';
+                    if(data === 'Good') color = '#27ae60';
+                    return `<span style="color:${color}">${data}</span>`;
+                }
+            },
             { data: 'days_left', defaultContent: "N/A" } 
         ]
     });
@@ -203,6 +237,6 @@ function prepareChangePass() {
 function logout() {
     currentUser = null; 
     currentPass = null;
-    toggleLogoutButton(false); // HIDE LOGOUT BUTTON
+    toggleLogoutButton(false);
     location.reload(); 
 }
