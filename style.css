@@ -22,9 +22,9 @@ body {
     min-height: 100vh;
 }
 
-/* --- 1. MOBILE HEADER --- */
+/* --- MOBILE HEADER --- */
 .mobile-header {
-    display: none; /* Hidden on Desktop */
+    display: none;
     position: fixed;
     top: 0; left: 0; right: 0;
     height: var(--header-height);
@@ -37,7 +37,7 @@ body {
 .menu-btn { background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
 .logo-text { margin-left: 15px; font-weight: bold; font-size: 1.2rem; color: var(--primary); }
 
-/* --- 2. SIDEBAR --- */
+/* --- SIDEBAR --- */
 .sidebar {
     position: fixed;
     top: 0; left: 0; bottom: 0;
@@ -63,7 +63,7 @@ body {
 }
 .logo-area { display: flex; align-items: center; }
 
-/* NEW: Image styling for header logo */
+/* FIX: Image Sizing */
 .header-logo-img {
     width: 28px;
     height: 28px;
@@ -71,8 +71,15 @@ body {
     object-fit: cover;
     margin-right: 12px;
 }
+.custom-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: cover;
+    display: block; /* Removes bottom space */
+}
 
-/* UPDATED: Dark Green Text */
+/* FIX: Dark Green Text */
 .header-text { 
     font-weight: bold; 
     color: #006400; /* Dark Green */
@@ -88,7 +95,7 @@ body {
 }
 .nav-item:hover { background-color: #f0fbfd; border-left: 3px solid var(--primary); padding-left: 15px; }
 .icon-box { min-width: 30px; display: flex; justify-content: center; align-items: center; margin-right: 15px; }
-.custom-icon { width: 24px; height: 24px; border-radius: 4px; object-fit: cover; }
+
 .nav-icon { font-size: 1.2rem; color: #555; }
 .nav-text { opacity: 0; transition: opacity 0.2s; }
 .sidebar:hover .nav-text, .sidebar.open .nav-text { opacity: 1; }
@@ -96,7 +103,7 @@ body {
 .logout-item { color: #e74c3c; }
 .logout-item:hover { background-color: #fff5f5; border-left-color: #e74c3c; }
 
-/* --- 3. MAIN CONTENT --- */
+/* --- MAIN CONTENT --- */
 .main-content {
     margin-left: var(--sidebar-width); 
     padding: 40px;
@@ -108,7 +115,7 @@ body {
     transition: margin-left 0.3s ease;
 }
 
-/* --- 4. CARDS & FORMS --- */
+/* --- CARDS & FORMS --- */
 .card {
     background: var(--bg-white); padding: 2.5rem; border-radius: 12px;
     border: 1px solid #eee;
@@ -139,14 +146,13 @@ input:focus { border-color: var(--primary); }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* --- 5. INVENTORY & MOBILE CONTROLS --- */
+/* --- INVENTORY & MOBILE CONTROLS --- */
 .inventory-wrapper { width: 100%; max-width: 1000px; display: none; }
 .page-title { margin-bottom: 20px; color: var(--text-dark); font-size: 2rem; }
 
-/* FIX #1: HIDE MOBILE CONTROLS ON DESKTOP */
 .mobile-controls { display: none !important; }
 
-/* DataTables Styling */
+/* Table Styling */
 table.dataTable thead th { text-align: left; color: #555; border-bottom: 2px solid #ddd; padding: 15px 10px; background: #fff; }
 table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; color: #444; background: #fff; }
 .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { margin-bottom: 15px; color: #333; }
@@ -157,32 +163,23 @@ table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0;
 /* ================================================= */
 @media (max-width: 768px) {
     
-    .mobile-header { display: flex; } /* Show Header */
-    
-    .main-content { 
-        margin-left: 0; 
-        padding: 80px 15px 20px 15px; 
-        width: 100%;
-    }
+    .mobile-header { display: flex; }
+    .main-content { margin-left: 0; padding: 80px 15px 20px 15px; width: 100%; }
 
-    /* Drawer Sidebar */
     .sidebar { transform: translateX(-100%); width: 250px; transition: transform 0.3s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
     .sidebar.open { transform: translateX(0); }
     .close-btn { display: block; }
     .nav-text { opacity: 1; }
 
-    /* Overlay */
     .overlay {
         position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);
         z-index: 150; display: none; opacity: 0; transition: opacity 0.3s;
     }
     .overlay.active { display: block; opacity: 1; }
 
-    /* FIX #1: SHOW MOBILE CONTROLS / HIDE DESKTOP SEARCH */
     .mobile-controls { display: flex !important; gap: 10px; margin-bottom: 15px; }
     .dataTables_filter, .dataTables_length { display: none !important; } 
     
-    /* Mobile Search Styles */
     .mobile-search-box { flex: 2; position: relative; }
     .mobile-search-box i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #aaa; }
     .mobile-search-box input { padding-left: 35px; border-radius: 20px; border: 1px solid #eee; }
@@ -190,7 +187,7 @@ table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0;
     .mobile-sort-box { flex: 1; }
     .mobile-sort-box select { width: 100%; padding: 12px; border-radius: 20px; border: 1px solid #eee; background: white; outline: none; }
 
-    /* Cards Layout for Table */
+    /* Cards Layout */
     table.dataTable thead { display: none; }
     table.dataTable tbody tr {
         display: block; background: #fff; margin-bottom: 15px; border-radius: 10px;
