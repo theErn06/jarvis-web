@@ -1,0 +1,247 @@
+:root {
+    --sidebar-width-collapsed: 50px;
+    --sidebar-width-expanded: 200px;
+    --nav-item-height: 50px;
+    /* Transparent Colors */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --sidebar-bg: rgba(255, 255, 255, 0.8);
+    --text-color: #333333;
+    --accent-color: #00bcd4; /* Jarvis Cyan */
+    --hover-color: rgba(0, 188, 212, 0.1);
+    --transition-speed: 0.3s;
+}
+
+/* Background Gradient to show off transparency */
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-size: 14px;
+    margin: 0; 
+    padding: 0;
+    display: flex; 
+    height: 100vh;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    color: #333;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+/* --- SIDEBAR (Glass Effect) --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width-collapsed);
+    background-color: var(--sidebar-bg);
+    backdrop-filter: blur(10px); /* Glass Blur */
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition-speed) ease;
+    z-index: 1000;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 1px solid var(--glass-border);
+}
+
+.sidebar:hover {
+    width: var(--sidebar-width-expanded);
+}
+
+.menu-header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 14px; 
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: var(--accent-color);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.nav-links { list-style: none; padding: 0; margin: 0; width: 100%; }
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    height: var(--nav-item-height);
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all 0.2s;
+    cursor: pointer;
+    padding-left: 14px; 
+}
+
+.nav-item:hover {
+    background-color: var(--hover-color);
+    border-left: 3px solid var(--accent-color);
+    padding-left: 11px;
+}
+
+.nav-icon-container {
+    min-width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.nav-img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.nav-fa { font-size: 1.1rem; }
+
+.nav-text {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    font-size: 0.95rem;
+}
+
+.sidebar:hover .nav-text {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.1s;
+}
+
+.bottom-section {
+    margin-top: auto;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+/* --- MAIN CONTENT --- */
+.main-content {
+    margin-left: var(--sidebar-width-collapsed);
+    flex-grow: 1;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: margin-left var(--transition-speed);
+}
+
+/* --- CONTAINER (Glass Effect) --- */
+.container { 
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    border: 1px solid var(--glass-border);
+    width: 100%; 
+    max-width: 850px;
+    margin: auto; 
+    transition: all 0.3s;
+}
+
+/* --- AUTH FORMS --- */
+.auth-box { max-width: 320px; margin: 0 auto; text-align: center; }
+.auth-links { margin-top:15px; display:flex; justify-content:space-between; }
+
+h2 { font-size: 1.6rem; margin-bottom: 5px; color: #333; }
+h3 { font-size: 1.1rem; margin-bottom: 15px; color: #666; font-weight: 400; }
+
+input { 
+    width: 100%; 
+    padding: 10px 12px;
+    margin: 8px 0; 
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 6px; 
+    box-sizing: border-box; 
+    font-size: 0.95rem;
+    background: rgba(255,255,255,0.8);
+}
+
+button { 
+    width: 100%; 
+    padding: 10px;
+    background-color: var(--accent-color); 
+    color: white; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    margin-top: 15px; 
+    font-weight: 600; 
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+button:hover { filter: brightness(90%); }
+button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+.secondary { background-color: #7f8c8d; margin-top: 10px; }
+
+.error { color: #e74c3c; display: none; margin-top: 10px; background: rgba(231, 76, 60, 0.1); padding: 8px; border-radius: 4px; font-size: 0.85rem; }
+.toggle-link { color: var(--accent-color); cursor: pointer; font-size: 0.85rem; }
+.toggle-link:hover { text-decoration: underline; }
+
+/* --- LOADING SPINNER --- */
+.spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s infinite; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- INVENTORY TABLE --- */
+#inventory-section { display: none; width: 100%; }
+.header-row { margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px; }
+.page-title { margin: 0; font-size: 1.5rem; color: #333; }
+
+/* DataTables Overrides for Transparency */
+table.dataTable tbody tr { background-color: transparent !important; }
+table.dataTable tbody td { border-bottom: 1px solid rgba(0,0,0,0.05); }
+.dataTables_wrapper .dataTables_length, 
+.dataTables_wrapper .dataTables_filter, 
+.dataTables_wrapper .dataTables_info, 
+.dataTables_wrapper .dataTables_paginate { color: #555 !important; }
+
+/* Table Scroll Wrapper for Mobile */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* --- RESPONSIVE DESIGN (Phone & Tablet) --- */
+@media screen and (max-width: 768px) {
+    :root {
+        --sidebar-width-collapsed: 0px; /* Hide sidebar completely on mobile unless needed, or keep small */
+        --sidebar-width-expanded: 60px; /* Small icon bar on mobile touch */
+    }
+
+    /* On mobile, let's keep a tiny strip or just icons */
+    .sidebar {
+        width: 50px; 
+    }
+    .sidebar:hover { width: 50px; } /* Disable expand on hover for mobile */
+    .sidebar.active { width: 200px; } /* Requires JS toggle if we wanted click-to-open */
+    
+    .nav-text { display: none; } /* Hide text on mobile to save space */
+    
+    .main-content {
+        margin-left: 50px;
+        padding: 10px;
+    }
+
+    .container {
+        padding: 1rem;
+        max-width: 100%;
+        border-radius: 0; /* Full width looks */
+        box-shadow: none;
+        background: rgba(255,255,255,0.85); /* More solid for readability */
+    }
+
+    h1.page-title { font-size: 1.2rem; }
+    h2 { font-size: 1.3rem; }
+    
+    /* Make table font smaller on mobile */
+    #inventory th, #inventory td {
+        font-size: 0.8rem;
+        padding: 6px 4px;
+    }
+}
