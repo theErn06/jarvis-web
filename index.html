@@ -79,7 +79,6 @@
                 <i class="fa-solid fa-user input-icon"></i>
                 <input type="text" id="login-user" placeholder="Username" />
             </div>
-            
             <div class="input-group">
                 <i class="fa-solid fa-lock input-icon"></i>
                 <input type="password" id="login-pass" placeholder="Password" />
@@ -89,9 +88,7 @@
                 <span class="btn-text">Login</span>
                 <div class="spinner"></div>
             </button>
-            
             <p id="login-msg" class="message"></p>
-            
             <div class="auth-actions">
                 <span onclick="prepareChangePass()">Change Password</span>
                 <span onclick="showView('signup-view')">Create Account</span>
@@ -101,7 +98,6 @@
         <div id="signup-view" class="card auth-card" style="display:none;">
             <h2>Create Account</h2>
             <p class="subtitle">Join the system</p>
-
             <div class="input-group">
                 <i class="fa-solid fa-user input-icon"></i>
                 <input type="text" id="signup-user" placeholder="Choose Username" />
@@ -110,7 +106,6 @@
                 <i class="fa-solid fa-lock input-icon"></i>
                 <input type="password" id="signup-pass" placeholder="Choose Password" />
             </div>
-
             <button onclick="handleAuth('signup')" id="btn-signup" class="primary-btn">
                 <span class="btn-text">Sign Up</span>
                 <div class="spinner"></div>
@@ -121,7 +116,6 @@
 
         <div id="change-pass-view" class="card auth-card" style="display:none;">
             <h2>Update Password</h2>
-            
             <div class="input-group">
                 <i class="fa-solid fa-user input-icon"></i>
                 <input type="text" id="cp-user" placeholder="Username" />
@@ -134,7 +128,6 @@
                 <i class="fa-solid fa-lock input-icon"></i>
                 <input type="password" id="cp-new" placeholder="New Password" />
             </div>
-
             <button onclick="handleAuth('change_password')" id="btn-cp" class="primary-btn">
                 <span class="btn-text">Update</span>
                 <div class="spinner"></div>
@@ -146,6 +139,21 @@
         <div id="inventory-section" class="inventory-wrapper">
             <h1 class="page-title">My Inventory</h1>
             
+            <div class="mobile-controls">
+                <div class="mobile-search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="mobile-search-input" placeholder="Search items...">
+                </div>
+                <div class="mobile-sort-box">
+                    <select id="mobile-sort-select">
+                        <option value="0_asc">Name (A-Z)</option>
+                        <option value="4_asc">Expiry (Oldest First)</option>
+                        <option value="4_desc">Expiry (Newest First)</option>
+                        <option value="6_asc">Days Left (Low to High)</option>
+                    </select>
+                </div>
+            </div>
+
             <table id="inventory" class="display" style="width:100%">
                 <thead>
                     <tr>
