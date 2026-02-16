@@ -63,7 +63,7 @@ body {
 }
 .logo-area { display: flex; align-items: center; }
 
-/* FIX: Image Sizing */
+/* Image Sizing */
 .header-logo-img {
     width: 28px;
     height: 28px;
@@ -76,14 +76,21 @@ body {
     height: 24px;
     border-radius: 4px;
     object-fit: cover;
-    display: block; /* Removes bottom space */
+    display: block; 
 }
 
-/* FIX: Dark Green Text */
+/* Menu Text Styles */
 .header-text { 
     font-weight: bold; 
     color: #006400; /* Dark Green */
     font-size: 1.1rem; 
+}
+
+/* NEW: Hamburger Icon Style */
+.menu-hamburger {
+    color: #555;
+    font-size: 1.1rem;
+    margin-right: 8px; /* Space between icon and text */
 }
 
 .close-btn { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
