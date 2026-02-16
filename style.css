@@ -1,7 +1,7 @@
 :root {
     --primary: #00bcd4;
     --primary-dark: #0097a7;
-    --bg-body: #ffffff; /* FIXED: Pure White */
+    --bg-body: #ffffff;
     --bg-white: #ffffff;
     --text-dark: #2c3e50;
     --text-light: #95a5a6;
@@ -18,13 +18,13 @@ body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background-color: var(--bg-body);
     color: var(--text-dark);
-    display: block; /* FIXED: Changed from flex to block to prevent layout breakage */
+    display: block; 
     min-height: 100vh;
 }
 
-/* --- 1. MOBILE HEADER (Hidden on Laptop) --- */
+/* --- 1. MOBILE HEADER --- */
 .mobile-header {
-    display: none; /* STRICTLY HIDDEN ON DESKTOP */
+    display: none; /* Hidden on Desktop */
     position: fixed;
     top: 0; left: 0; right: 0;
     height: var(--header-height);
@@ -42,7 +42,7 @@ body {
     position: fixed;
     top: 0; left: 0; bottom: 0;
     width: var(--sidebar-width);
-    background: #fcfcfc; /* Slight off-white for separation */
+    background: #fcfcfc;
     border-right: 1px solid #eee;
     z-index: 200;
     transition: width 0.3s ease, transform 0.3s ease;
@@ -62,7 +62,23 @@ body {
     border-bottom: 1px solid #eee;
 }
 .logo-area { display: flex; align-items: center; }
-.header-text { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
+
+/* NEW: Image styling for header logo */
+.header-logo-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+/* UPDATED: Dark Green Text */
+.header-text { 
+    font-weight: bold; 
+    color: #006400; /* Dark Green */
+    font-size: 1.1rem; 
+}
+
 .close-btn { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
 
 .nav-links { list-style: none; padding: 0; margin: 20px 0; width: 100%; }
@@ -80,9 +96,8 @@ body {
 .logout-item { color: #e74c3c; }
 .logout-item:hover { background-color: #fff5f5; border-left-color: #e74c3c; }
 
-/* --- 3. MAIN CONTENT (Layout Fix) --- */
+/* --- 3. MAIN CONTENT --- */
 .main-content {
-    /* FIXED: This ensures content sits next to sidebar, not under or squished */
     margin-left: var(--sidebar-width); 
     padding: 40px;
     width: calc(100% - var(--sidebar-width));
@@ -96,7 +111,7 @@ body {
 /* --- 4. CARDS & FORMS --- */
 .card {
     background: var(--bg-white); padding: 2.5rem; border-radius: 12px;
-    border: 1px solid #eee; /* Light border for visibility on white */
+    border: 1px solid #eee;
     width: 100%; max-width: 400px; text-align: center; margin-top: 50px;
 }
 .auth-card h2 { margin-bottom: 5px; color: var(--text-dark); }
@@ -131,7 +146,7 @@ input:focus { border-color: var(--primary); }
 /* FIX #1: HIDE MOBILE CONTROLS ON DESKTOP */
 .mobile-controls { display: none !important; }
 
-/* DataTables Styling for White Theme */
+/* DataTables Styling */
 table.dataTable thead th { text-align: left; color: #555; border-bottom: 2px solid #ddd; padding: 15px 10px; background: #fff; }
 table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; color: #444; background: #fff; }
 .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { margin-bottom: 15px; color: #333; }
@@ -165,7 +180,7 @@ table.dataTable tbody td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0;
 
     /* FIX #1: SHOW MOBILE CONTROLS / HIDE DESKTOP SEARCH */
     .mobile-controls { display: flex !important; gap: 10px; margin-bottom: 15px; }
-    .dataTables_filter, .dataTables_length { display: none !important; } /* Hide default table search */
+    .dataTables_filter, .dataTables_length { display: none !important; } 
     
     /* Mobile Search Styles */
     .mobile-search-box { flex: 2; position: relative; }
