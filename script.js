@@ -2,37 +2,38 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwG462ao0VUGfTOuxNcnYm-
 
 let currentUser = null;
 let currentPass = null;
-let tableInstance = null;
 
 $(document).ready(function() {
     toggleLogoutButton(false);
 });
 
-// --- MOBILE MENU FUNCTIONS ---
-function toggleMobileMenu() {
-    $('#sidebar').toggleClass('mobile-open');
-    $('.mobile-backdrop').toggleClass('active');
+// --- MOBILE MENU LOGIC ---
+function toggleMenu() {
+    $('#sidebar').toggleClass('open');
+    $('.overlay').toggleClass('active');
 }
 
 function toggleLogoutButton(show) {
-    if (show) {
-        $('#logout-section').fadeIn();
-    } else {
-        $('#logout-section').hide();
-    }
+    if (show) $('#logout-section').show();
+    else $('#logout-section').hide();
 }
 
+// --- VIEW NAVIGATION ---
 function showView(viewId) {
-    // Close mobile menu if open when switching views
-    $('#sidebar').removeClass('mobile-open');
-    $('.mobile-backdrop').removeClass('active');
+    // Close menu if open (for mobile)
+    $('#sidebar').removeClass('open');
+    $('.overlay').removeClass('active');
 
-    $('.auth-box, #inventory-section').hide();
+    // Hide all, show target
+    $('.card, .inventory-wrapper').hide();
     $('#' + viewId).fadeIn();
-    $('.error, .success').hide().text('');
+    
+    // Clear messages
+    $('.message').text('').removeClass('error');
     $('input').val('');
 }
 
+// --- AUTHENTICATION ---
 function handleAuth(action) {
     let payload = { action: action };
     let msgBox, btn;
@@ -52,7 +53,7 @@ function handleAuth(action) {
         msgBox = $('#cp-msg'); btn = $('#btn-cp');
     }
 
-    msgBox.hide(); 
+    msgBox.removeClass('error').text('');
     btn.prop('disabled', true).find('.btn-text').hide().end().find('.spinner').show();
 
     $.ajax({
@@ -65,65 +66,49 @@ function handleAuth(action) {
             
             let res;
             try {
-                if (typeof response === "object") {
-                    res = response; 
-                } else {
-                    res = JSON.parse(response); 
-                }
+                res = (typeof response === "object") ? response : JSON.parse(response);
             } catch (e) {
-                console.error("Raw response:", response);
-                msgBox.addClass('error').text("Server returned invalid data.").show();
+                msgBox.addClass('error').text("Invalid server response.");
                 return;
             }
 
             if (res.status === 'success') {
-                if (action === 'login') {
+                if (action === 'login' || action === 'signup') {
                     currentUser = payload.username;
                     currentPass = payload.password;
-                    $('.auth-box').hide();
-                    $('#inventory-section').fadeIn();
-                    toggleLogoutButton(true);
-                    loadTable();
-                } else if (action === 'signup') {
-                    alert("Account created! Logging you in...");
-                    currentUser = payload.username;
-                    currentPass = payload.password;
-                    $('.auth-box').hide();
+                    $('.card').hide(); // Hide login cards
                     $('#inventory-section').fadeIn();
                     toggleLogoutButton(true);
                     loadTable();
                 } else if (action === 'change_password') {
-                    alert("Password changed! Please login again."); 
+                    alert("Password updated. Please login again."); 
                     logout();
                 }
             } else {
-                msgBox.addClass('error').text(res.message).show();
+                msgBox.addClass('error').text(res.message);
             }
         },
-        error: function(xhr, status, error) {
-            console.error("AJAX Error:", error);
+        error: function() {
             btn.prop('disabled', false).find('.btn-text').show().end().find('.spinner').hide();
-            msgBox.addClass('error').text("Connection failed. Check internet.").show();
+            msgBox.addClass('error').text("Connection failed. Please check internet.");
         }
     });
 }
 
+// --- DATATABLE LOADING ---
 function loadTable() {
     if ($.fn.DataTable.isDataTable('#inventory')) {
         $('#inventory').DataTable().ajax.reload();
         return;
     } 
 
-    tableInstance = $('#inventory').DataTable({
+    $('#inventory').DataTable({
         processing: true,
         pageLength: 10,
-        lengthChange: false, // Simple UI
-        language: {
-            search: "_INPUT_",
-            searchPlaceholder: "Search items..."
-        },
-        // --- CRITICAL FOR MOBILE CARD VIEW ---
-        // This adds 'data-label' to every cell so CSS can display it
+        lengthChange: false, // Cleaner UI
+        language: { search: "", searchPlaceholder: "Search items..." },
+        
+        // CRITICAL: Adds labels for Mobile Card View
         createdRow: function (row, data, dataIndex) {
             $('td', row).eq(0).attr('data-label', 'Item');
             $('td', row).eq(1).attr('data-label', 'Qty');
@@ -133,7 +118,7 @@ function loadTable() {
             $('td', row).eq(5).attr('data-label', 'Status');
             $('td', row).eq(6).attr('data-label', 'Days Left');
         },
-        // -------------------------------------
+        
         ajax: function (data, callback, settings) {
             $.ajax({
                 url: API_URL,
@@ -146,14 +131,10 @@ function loadTable() {
                 }),
                 success: function (response) {
                     let json;
-                    if (typeof response === "object") {
-                        json = response;
-                    } else {
-                        try {
-                            json = JSON.parse(response);
-                        } catch(e) {
-                            json = { data: [] };
-                        }
+                    try {
+                        json = (typeof response === "object") ? response : JSON.parse(response);
+                    } catch(e) {
+                        json = { data: [] };
                     }
                     
                     if (json.error) {
@@ -179,32 +160,9 @@ function loadTable() {
                     return `<strong>${text.charAt(0).toUpperCase() + text.slice(1)}</strong>`;
                 }
             },
-            { 
-                data: 'qty', 
-                defaultContent: "0",
-                render: function (data) {
-                    if (!data || data === "0") return "0";
-                    let text = String(data); 
-                    return text.charAt(0).toUpperCase() + text.slice(1);
-                }
-            },
-            {   data: 'unit', 
-                defaultContent: "-",
-                render: function (data) {
-                    if (!data || data === "-") return "-";
-                    let text = String(data);
-                    return text.charAt(0).toUpperCase() + text.slice(1);
-                }
-             },
-            { 
-                data: 'category', 
-                defaultContent: "-",
-                render: function (data) {
-                    if (!data || data === "-") return "-";
-                    let text = String(data);
-                    return text.charAt(0).toUpperCase() + text.slice(1);
-                }
-            },
+            { data: 'qty', defaultContent: "0" },
+            { data: 'unit', defaultContent: "-" },
+            { data: 'category', defaultContent: "-" },
             { 
                 data: 'expiry', 
                 defaultContent: "-",
@@ -217,11 +175,11 @@ function loadTable() {
                 data: 'status', 
                 defaultContent: "N/A",
                 render: function(data) {
-                    // Optional: Add simple color coding
                     let color = '#333';
                     if(data === 'Expired') color = '#e74c3c';
-                    if(data === 'Good') color = '#27ae60';
-                    return `<span style="color:${color}">${data}</span>`;
+                    else if(data === 'Good') color = '#27ae60';
+                    else if(data === 'Expiring Soon') color = '#f39c12';
+                    return `<span style="color:${color}; font-weight:600;">${data}</span>`;
                 }
             },
             { data: 'days_left', defaultContent: "N/A" } 
